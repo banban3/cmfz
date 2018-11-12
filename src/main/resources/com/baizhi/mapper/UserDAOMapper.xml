@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.baizhi.dao.UserDAO">
+
+    <insert id="insert" parameterType="com.baizhi.entity.User">
+       insert into user (id,name,phone,password,salt,img_url,fname,sex,addre,signature,stat,c_date)
+       values
+       (#{id},#{name},#{phone},#{password},#{salt},#{img_url},#{fname},#{sex},#{addre},#{signature},#{stat},#{c_date})
+    </insert>
+
+    <update id="update" parameterType="com.baizhi.entity.User">
+        update user set password=#{password}
+        where id=#{id}
+    </update>
+    <update id="upStat" parameterType="com.baizhi.entity.User">
+        update user set stat=#{stat}
+        where id=#{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.String">
+        delete from user where id=#{id}
+    </delete>
+    <select id="queryOne" parameterType="java.lang.String" resultType="com.baizhi.entity.User">
+       select id,name,phone,password,salt,img_url,fname,sex,addre,signature,stat,c_date from user
+       where id=#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.baizhi.entity.User">
+         select id,name,phone,password,salt,img_url,fname,sex,addre,signature,stat,c_date from user
+    </select>
+
+    <select id="findByPage" resultType="com.baizhi.entity.User">
+       select id,name,phone,password,salt,img_url,fname,sex,addre,signature,stat,c_date from user
+        limit #{start},#{rows}
+    </select>
+    <select id="findTotals" resultType="long">
+        select count(id) from user
+    </select>
+</mapper>

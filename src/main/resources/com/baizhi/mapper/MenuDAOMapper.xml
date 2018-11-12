@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.MenuDAO">
+
+
+    <!--<insert id="save" parameterType="com.entity.User">
+      insert into t_user values (#{id},#{name},#{age},#{bir},#{sex},#{address})
+    </insert>-->
+
+    <!--<delete id="delete" parameterType="java.lang.String">
+        delete from t_user
+        where id=#{id}
+    </delete>-->
+
+    <!--<update id="update" parameterType="com.entity.User">
+        update t_user set
+        name=#{name},age=#{age},bir=#{bir},sex=#{sex},address=#{address}
+        where id=#{id}
+    </update>-->
+
+    <!--<select id="queryOne" parameterType="java.lang.String" resultType="com.entity.User">
+        select id,name,age,bir,sex,address from t_user
+        where id =#{id}
+    </select>-->
+    <resultMap id="menu" type="com.baizhi.entity.Menu">
+        <id property="id" column="p_id"></id>
+        <result property="name" column="p_name"></result>
+        <result property="iconCls" column="p_iconCls"></result>
+        <result property="href" column="p_href"></result>
+        <collection property="childs" ofType="com.baizhi.entity.Menu">
+            <id property="id" column="c_id"></id>
+            <result property="name" column="c_name"></result>
+            <result property="iconCls" column="c_iconCls"></result>
+            <result property="href" column="c_href"></result>
+        </collection>
+    </resultMap>
+
+    <select id="queryAll" resultMap="menu">
+        select p.id p_id,p.name p_name,p.iconCls p_iconCls,p.href p_href,
+               c.id c_id,c.name c_name,c.iconCls c_iconCls,c.href c_href
+               from menu p join menu c on p.id=c.p_id
+    </select>
+    <!--<select id="findByPage" resultType="com.entity.User">
+      select  id,name,age,bir,sex,address
+      from t_user
+      limit #{start},#{rows}
+    </select>-->
+    <!--<select id="findTotals" resultType="long">
+        select count(id) from t_user
+    </select>-->
+</mapper>

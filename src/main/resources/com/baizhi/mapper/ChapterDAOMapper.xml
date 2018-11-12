@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.baizhi.dao.ChapterDAO">
+
+    <insert id="insert" parameterType="com.baizhi.entity.Chapter">
+       insert into chapter (id,name,size,pub_time,downpath,downloadtime,a_id) values
+       (#{id},#{name},#{size},#{pub_time},#{downpath},#{downloadtime},#{a_id})
+    </insert>
+
+    <update id="update" parameterType="com.baizhi.entity.Chapter">
+        update chapter set name =#{name},size =#{size},pub_time=#{pub_time},
+        downpath=#{downpath},downloadtime=#{downloadtime},a_id=#{a_id}
+        where id=#{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.String">
+        delete from chapter where id=#{id}
+    </delete>
+    <select id="queryOne" parameterType="java.lang.String" resultType="com.baizhi.entity.Chapter">
+       select id,name,size,pub_time,downpath,downloadtime,a_id from chapter
+        where id =#{id}
+    </select>
+
+    <select id="queryAll" resultType="com.baizhi.entity.Chapter">
+         select id,name,size,pub_time,downpath,downloadtime,a_id from chapter
+    </select>
+
+    <select id="findByPage" resultType="com.baizhi.entity.Chapter">
+        select id,name,size,pub_time,downpath,downloadtime,a_id from chapter
+        limit #{start},#{rows}
+    </select>
+    <select id="findTotals" resultType="long">
+        select count(id) from chapter
+    </select>
+    <select id="acount" parameterType="java.lang.String" resultType="long">
+        select count(id) from chapter
+        where a_id=#{a_id}
+    </select>
+</mapper>

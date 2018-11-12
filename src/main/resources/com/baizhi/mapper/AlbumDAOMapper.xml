@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.baizhi.dao.AlbumDAO">
+
+    <resultMap id="alb" type="com.baizhi.entity.Album">
+        <id property="id" column="p_id"></id>
+        <result property="name" column="p_name"></result>
+        <result property="pub_date" column="p_pub_date"></result>
+        <result property="n_count" column="p_n_count"></result>
+        <result property="img_url" column="p_img_url"></result>
+        <result property="star" column="p_star"></result>
+        <result property="author" column="p_author"></result>
+        <result property="broadcast" column="p_broadcast"></result>
+        <result property="context" column="p_context"></result>
+        <collection property="children" ofType="com.baizhi.entity.Chapter">
+            <id property="id" column="e_id"></id>
+            <result property="name" column="e_name"></result>
+            <result property="size" column="e_size"></result>
+            <result property="pub_time" column="e_pub_time"></result>
+            <result property="downpath" column="e_downpath"></result>
+            <result property="downloadtime" column="e_downloadtime"></result>
+        </collection>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.baizhi.entity.Album">
+       insert into album (id,name,pub_date,n_count,img_url,star,author,broadcast,context) values
+       (#{id},#{name},#{pub_date},#{n_count},#{img_url},#{star},#{author},#{broadcast},#{context})
+    </insert>
+
+    <update id="update" parameterType="com.baizhi.entity.Album">
+        update album set name =#{name},pub_date =#{pub_date},n_count =#{n_count},
+                          img_url =#{img_url},star =#{star},author=#{author},
+                          context =#{context},broadcast=#{broadcast}
+        where id=#{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.String">
+        delete from album where id=#{id}
+    </delete>
+    <select id="queryOne" parameterType="java.lang.String" resultMap="alb">
+       select p.id p_id,p.name p_name,p.pub_date p_pub_date,p.n_count p_n_count,p.img_url p_img_url,p.star p_star,p.author p_author,p.context p_context,p.broadcast p_broadcast,
+        e.id e_id,e.name e_name,e.size e_size,e.pub_time e_pub_time,e.downpath e_downpath,e.downloadtime e_downloadtime
+        from album p left join chapter e on p.id=e.a_id
+        where p.id =#{id}
+    </select>
+
+    <select id="queryAll" resultMap="alb">
+         select p.id p_id,p.name p_name,p.pub_date p_pub_date,p.n_count p_n_count,p.img_url p_img_url,p.star p_star,p.author p_author,p.context p_context,p.broadcast p_broadcast,
+        e.id e_id,e.name e_name,e.size e_size,e.pub_time e_pub_time,e.downpath e_downpath,e.downloadtime e_downloadtime
+        from album p left join chapter e on p.id=e.a_id
+    </select>
+
+    <select id="findByPage" resultMap="alb">
+        select p.id p_id,p.name p_name,p.pub_date p_pub_date,p.n_count p_n_count,p.img_url p_img_url,p.star p_star,p.author p_author,p.context p_context,p.broadcast p_broadcast,
+        e.id e_id,e.name e_name,e.size e_size,e.pub_time e_pub_time,e.downpath e_downpath,e.downloadtime e_downloadtime
+        from album p left join chapter e on p.id=e.a_id
+        limit #{start},#{rows}
+    </select>
+    <select id="findTotals" resultType="long">
+        select count(id) from album
+    </select>
+</mapper>

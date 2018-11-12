@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.baizhi.dao.ArticleDAO">
+
+    <resultMap id="art" type="com.baizhi.entity.Article">
+        <id property="id" column="p_id"></id>
+        <result property="title" column="p_title"></result>
+        <result property="c_img" column="p_c_img"></result>
+        <result property="pub_date" column="p_pub_date"></result>
+        <result property="content" column="p_content"></result>
+        <result property="fid" column="p_fid"></result>
+        <association property="teach" javaType="com.baizhi.entity.Teach">
+            <id property="id" column="e_id"></id>
+            <result property="name" column="e_name"></result>
+            <result property="head_img" column="e_head_img"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.baizhi.entity.Article">
+       insert into article (id,title,c_img,pub_date,content,fid) values
+       (#{id},#{title},#{c_img},#{pub_date},#{content},#{fid})
+    </insert>
+
+    <update id="update" parameterType="com.baizhi.entity.Article">
+        update article set title =#{title},c_img =#{c_img},pub_date =#{pub_date},
+                          content =#{content},fid =#{fid}
+        where id=#{id}
+    </update>
+    <delete id="delete" parameterType="java.lang.String">
+        delete from article where id=#{id}
+    </delete>
+    <select id="queryOne" parameterType="java.lang.String" resultMap="art">
+        select p.id p_id,p.title p_title,p.c_img p_c_img,p.pub_date p_pub_date,p.content p_content,p.fid p_fid,
+         e.id e_id,e.name e_name,e.head_img e_head_img
+        from article p left join teach e on p.fid=e.id
+        where p.id =#{id}
+    </select>
+
+    <select id="queryAll" resultMap="art">
+         select p.id p_id,p.title p_title,p.c_img p_c_img,p.pub_date p_pub_date,p.content p_content,p.fid p_fid,
+         e.id e_id,e.name e_name,e.head_img e_head_img
+        from article p left join teach e on p.fid=e.id
+    </select>
+
+    <select id="findByPage" resultMap="art">
+        select p.id p_id,p.title p_title,p.c_img p_c_img,p.pub_date p_pub_date,p.content p_content,p.fid p_fid,
+         e.id e_id,e.name e_name,e.head_img e_head_img
+        from article p left join teach e on p.fid=e.id
+        limit #{start},#{rows}
+    </select>
+    <select id="findTotals" resultType="long">
+        select count(id) from album
+    </select>
+</mapper>

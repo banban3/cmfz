@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.baizhi.dao.AdminDAO">
+
+
+    <insert id="insert" parameterType="com.baizhi.entity.Admin">
+       insert into admin values (#{id},#{name},#{password},#{limits})
+    </insert>
+
+    <update id="update" parameterType="com.baizhi.entity.Admin">
+        update admin set name =#{name},password=#{password},limits=#{limits}
+        where id=#{id}
+    </update>
+    <select id="queryOne" parameterType="java.lang.String" resultType="com.baizhi.entity.Admin">
+       select id,name,password from admin
+       where name =#{name}
+    </select>
+
+    <select id="queryAll" resultType="com.baizhi.entity.Admin">
+       select id,name,password from admin
+    </select>
+    <select id="findByPage" resultType="com.baizhi.entity.Admin">
+       /* select id,no,name,creatdate,number,mark from dept
+        limit #{start},#{rows}*/
+    </select>
+    <select id="findTotals" resultType="long">
+        /*select count(id) from dept*/
+    </select>
+</mapper>
